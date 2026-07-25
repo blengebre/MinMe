@@ -1,4 +1,4 @@
-﻿import { NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { verifyTelegramInitData, parseTelegramUser } from '../../../../../lib/telegram';
 import { findBusinessForUser } from '../../../../../lib/server/businesses';
 import { findJobById } from '../../../../../lib/server/jobs';

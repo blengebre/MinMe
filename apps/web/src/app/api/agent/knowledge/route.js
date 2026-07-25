@@ -1,4 +1,4 @@
-﻿/**
+/**
  * GET  /api/agent/knowledge  → list all KB sources (docs + ingested URLs + business socials)
  * DELETE /api/agent/knowledge?id=<doc_id>  → remove a source
  */

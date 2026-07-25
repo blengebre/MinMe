@@ -1,4 +1,4 @@
-﻿/**
+/**
  * POST /api/agent/jobs/seed — idempotent: creates (or returns) the demo job
  * so the owner can see the UI working before a real client message comes in.
  */

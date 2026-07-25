@@ -1,4 +1,4 @@
-﻿/**
+/**
  * PATCH /api/customers/[id]
  * Body: { name: string }
  * Renames a customer record — owner only, scoped to their business.

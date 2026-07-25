@@ -1,4 +1,4 @@
-﻿/**
+/**
  * POST /api/advisor/feedback
  * Body: { helpful: boolean, note?: string, target_id?: string }
  * Records thumbs-up/down feedback on an advisor response.

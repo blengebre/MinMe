@@ -1,4 +1,4 @@
-﻿/**
+/**
  * GET  /api/agent/jobs         → list jobs for the authenticated business
  * POST /api/agent/jobs/seed    → (dev-only) seed a demo job so the UI has data
  *

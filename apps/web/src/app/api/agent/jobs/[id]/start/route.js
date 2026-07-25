@@ -1,4 +1,4 @@
-﻿/**
+/**
  * POST /api/agent/jobs/[id]/start — manually kick off (or re-fire) a job's pipeline.
  *
  * Works for any non-terminal status. Resets blocked/waiting steps to idle so

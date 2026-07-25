@@ -1,4 +1,4 @@
-﻿/**
+/**
  * POST /api/conversations/[id]/reply
  * Sends an owner reply to a customer via the business's Telegram bot.
  * Also saves the message to the DB so it appears in the conversation view.

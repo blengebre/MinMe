@@ -1,4 +1,4 @@
-﻿/**
+/**
  * GET /api/agent/brain  → { enabled: boolean, recent: [thought] }
  * POST /api/agent/brain → body {enabled: boolean} → flip brain_mode
  *

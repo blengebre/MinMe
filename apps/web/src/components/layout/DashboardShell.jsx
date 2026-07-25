@@ -407,7 +407,7 @@ export default function DashboardShell({ children }) {
           <main style={{
             flex: 1,
             overflowY: 'auto',
-            padding: '16px 16px',
+            padding: '24px',
             paddingBottom: 'max(96px, calc(80px + env(safe-area-inset-bottom)))',
             width: '100%',
             boxSizing: 'border-box',
@@ -423,29 +423,36 @@ export default function DashboardShell({ children }) {
   );
 }
 
+function shellGreeting() {
+  const h = new Date().getHours();
+  const amharicDay = new Date().getDate() % 2 === 0;
+  if (h < 5)  return amharicDay ? 'ሌሊቱን ሙሉ' : 'Working late';
+  if (h < 12) return amharicDay ? 'እንደምን አደሩ' : 'Good morning';
+  if (h < 18) return amharicDay ? 'እንደምን ዋሉ' : 'Good afternoon';
+  return amharicDay ? 'እንደምን አመሹ' : 'Good evening';
+}
+
 function DashboardTopBar({ business, telegramUser }) {
   const { theme, toggleTheme } = useTelegram();
   const isDark = theme === 'dark';
   const pathname = usePathname();
   const router = useRouter();
-  // The 5 bottom-tab roots are "top level" — everything deeper gets a visible
-  // in-app Back button. We don't rely on Telegram's native header BackButton
-  // (users miss it, and it vanishes in fullscreen): this chevron is always here.
   const TABS = ['/', '/conversations', '/advisor', '/pipeline', '/settings'];
   const showBack = !TABS.includes(pathname);
   const goBack = () => {
     try { sessionStorage.setItem('_navigated', '1'); } catch {}
-    // Fall back to Home when there's no history to pop (e.g. opened via deep link).
     if (typeof window !== 'undefined' && window.history.length > 1) router.back();
     else router.push('/');
   };
+  const ownerFirst = business?.owner_name?.split(' ')[0] || '';
+  const active = !business?.panic_mode;
   return (
     <header style={{
-      height: 56,
+      height: 64,
       borderBottom: '1px solid var(--line)',
       background: 'var(--paper)',
       display: 'flex', alignItems: 'center',
-      padding: '0 16px', gap: 12,
+      padding: '0 24px', gap: 16,
       flexShrink: 0,
       position: 'sticky', top: 0, zIndex: 20,
     }}>
@@ -453,6 +460,7 @@ function DashboardTopBar({ business, telegramUser }) {
         <button
           onClick={goBack}
           aria-label="Back"
+          className="md:hidden"
           style={{
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             width: 38, height: 38, marginLeft: -8, borderRadius: 10,
@@ -466,20 +474,27 @@ function DashboardTopBar({ business, telegramUser }) {
         </button>
       )}
       <div style={{ flex: 1, minWidth: 0 }}>
-        <p style={{ fontSize: 14, fontWeight: 600, color: COLORS.textPrimary, margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+        <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: COLORS.textHint, margin: 0 }}>
+          {shellGreeting()}{ownerFirst ? `, ${ownerFirst}` : ''}
+        </p>
+        <p style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: 18, fontWeight: 400, color: COLORS.textPrimary, margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', letterSpacing: '-0.01em' }}>
           {business.name}
         </p>
-        <p style={{ fontSize: 12, color: COLORS.textHint, margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-          @{telegramUser.username || telegramUser.first_name}
-        </p>
       </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
-        {business.panic_mode && (
-          <span style={{ fontSize: 11, background: COLORS.redLight, color: COLORS.red, border: `1px solid ${COLORS.red}40`, borderRadius: 999, padding: '2px 8px', fontWeight: 600 }}>
-            PANIC
-          </span>
-        )}
-        {/* Dark mode toggle */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
+        <span style={{
+          fontSize: 11, fontWeight: 600, padding: '4px 10px', borderRadius: 999,
+          background: active ? 'rgba(79,163,138,0.12)' : 'rgba(184,84,80,0.10)',
+          color: active ? COLORS.green : COLORS.red,
+          display: 'inline-flex', alignItems: 'center', gap: 5,
+        }}>
+          <span style={{
+            width: 6, height: 6, borderRadius: '50%', background: active ? COLORS.green : COLORS.red,
+            animation: active ? 'pulse 2s infinite' : 'none',
+          }} />
+          {active ? 'Bot Active' : 'Paused'}
+        </span>
+        <div style={{ width: 1, height: 24, background: 'var(--line)' }} />
         <button
           onClick={toggleTheme}
           title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
@@ -492,11 +507,6 @@ function DashboardTopBar({ business, telegramUser }) {
         >
           {isDark ? '☀️' : '🌙'}
         </button>
-        <span
-          className="animate-pulse"
-          style={{ width: 8, height: 8, borderRadius: '50%', background: COLORS.green, display: 'inline-block' }}
-          title="MiniMe active"
-        />
       </div>
     </header>
   );

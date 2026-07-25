@@ -1,4 +1,4 @@
-﻿/**
+/**
  * POST /api/agent/jobs/create — owner manually creates a job from the dashboard.
  *
  * Body: { title, description?, deadline?, budget?, currency?, clientName?, clientContact?, steps? }

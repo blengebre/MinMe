@@ -1,4 +1,4 @@
-﻿/**
+/**
  * POST /api/teach
  * Body: { description?, urls?: string[], forwardedSnippets?: string[] }
  *

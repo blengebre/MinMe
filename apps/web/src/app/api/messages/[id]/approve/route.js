@@ -1,4 +1,4 @@
-﻿/**
+/**
  * POST /api/messages/[id]/approve
  * Approves a pending_approval AI draft and sends it to the customer via Telegram.
  *

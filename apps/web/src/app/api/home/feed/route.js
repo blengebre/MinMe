@@ -1,4 +1,4 @@
-﻿/**
+/**
  * GET /api/home/feed — drives the redesigned home (Messages tab).
  * Returns:
  *   - needs_reply: list of conversations that need owner attention

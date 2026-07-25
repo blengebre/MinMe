@@ -1,4 +1,4 @@
-﻿/**
+/**
  * GET /api/conversations/files
  * Returns all file attachments sent by clients (inbound) for the owner's business.
  * Used by Team > Files tab so team members can access client-sent files.

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * POST /api/advisor/query
  * Body: { question }
  * Returns: { response, suggestedActions, stats, pipeline }

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * POST /api/messages/[id]/skip
  * Marks an AI draft as skipped and clears requires_owner on the conversation.
  */

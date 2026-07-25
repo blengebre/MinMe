@@ -1,4 +1,4 @@
-﻿/**
+/**
  * GET    /api/orders     — paginated order list
  * POST   /api/orders     — manually create an order (walk-in, phone orders)
  * PATCH  /api/orders     — update order status

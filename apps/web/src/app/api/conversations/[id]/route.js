@@ -1,4 +1,4 @@
-﻿/**
+/**
  * GET /api/conversations/[id] — conversation + messages for the dashboard.
  *
  * The browser anon key hits RLS and can't read `messages`, so the dashboard

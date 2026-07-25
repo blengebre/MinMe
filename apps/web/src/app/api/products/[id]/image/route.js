@@ -1,4 +1,4 @@
-﻿/**
+/**
  * POST   /api/products/:id/image  — upload a showcase image (multipart)
  * DELETE /api/products/:id/image  — remove the image
  *

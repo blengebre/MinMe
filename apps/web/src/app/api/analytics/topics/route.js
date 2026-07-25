@@ -1,4 +1,4 @@
-﻿/**
+/**
  * GET /api/analytics/topics
  * Returns the top detected topics + intents from inbound messages in the last 30 days.
  * Uses messages.detected_topics (TEXT[]) and messages.detected_intent (VARCHAR).

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * PATCH  /api/agent/team/[id]  → update a team member's fields
  * DELETE /api/agent/team/[id]  → soft-delete (is_active=false)
  *

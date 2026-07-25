@@ -1,4 +1,4 @@
-﻿/**
+/**
  * POST /api/agent/team/[id]/ping — send a 1-line test DM to this team member.
  * Returns the raw Telegram response so the owner can see the actual error
  * (chat not found, blocked, bad ID, etc.).

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * GET /api/advisor/resolve-client?q=<name>
  * Resolves a client name (or @handle) to their most recent active conversation_id.
  * Used by the Advisor's action buttons to deep-link straight into a chat.
