@@ -424,12 +424,13 @@ export default function DashboardShell({ children }) {
 }
 
 function shellGreeting() {
-  const h = new Date().getHours();
-  const amharicDay = new Date().getDate() % 2 === 0;
-  if (h < 5)  return amharicDay ? 'ሌሊቱን ሙሉ' : 'Working late';
-  if (h < 12) return amharicDay ? 'እንደምን አደሩ' : 'Good morning';
-  if (h < 18) return amharicDay ? 'እንደምን ዋሉ' : 'Good afternoon';
-  return amharicDay ? 'እንደምን አመሹ' : 'Good evening';
+  const now = new Date();
+  const h = now.getHours();
+  const am = now.getDate() % 2 === 0;
+  if (h < 5)  return am ? 'ሌሊቱን ሙሉ' : 'Working late';
+  if (h < 12) return am ? 'እንደምን አደሩ' : 'Good morning';
+  if (h < 18) return am ? 'እንደምን ዋሉ' : 'Good afternoon';
+  return am ? 'እንደምን አመሹ' : 'Good evening';
 }
 
 function DashboardTopBar({ business, telegramUser }) {
@@ -437,15 +438,18 @@ function DashboardTopBar({ business, telegramUser }) {
   const isDark = theme === 'dark';
   const pathname = usePathname();
   const router = useRouter();
+
   const TABS = ['/', '/conversations', '/advisor', '/pipeline', '/settings'];
   const showBack = !TABS.includes(pathname);
+  const ownerFirst = business?.owner_name?.split(' ')[0] || '';
+  const paused = !!business?.panic_mode;
+
   const goBack = () => {
     try { sessionStorage.setItem('_navigated', '1'); } catch {}
     if (typeof window !== 'undefined' && window.history.length > 1) router.back();
     else router.push('/');
   };
-  const ownerFirst = business?.owner_name?.split(' ')[0] || '';
-  const active = !business?.panic_mode;
+
   return (
     <header style={{
       height: 64,
@@ -463,7 +467,7 @@ function DashboardTopBar({ business, telegramUser }) {
           className="md:hidden"
           style={{
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            width: 38, height: 38, marginLeft: -8, borderRadius: 10,
+            width: 38, height: 38, marginLeft: -12, borderRadius: 10,
             border: 'none', background: 'transparent', cursor: 'pointer',
             color: COLORS.textPrimary, flexShrink: 0,
           }}
@@ -473,35 +477,43 @@ function DashboardTopBar({ business, telegramUser }) {
           </svg>
         </button>
       )}
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: COLORS.textHint, margin: 0 }}>
+
+      <div style={{ minWidth: 0, flexShrink: 1 }}>
+        <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: COLORS.textHint, margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
           {shellGreeting()}{ownerFirst ? `, ${ownerFirst}` : ''}
         </p>
-        <p style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: 18, fontWeight: 400, color: COLORS.textPrimary, margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', letterSpacing: '-0.01em' }}>
-          {business.name}
+        <p style={{ fontSize: 18, fontWeight: 700, color: COLORS.textPrimary, margin: '2px 0 0 0', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', letterSpacing: '-0.01em', fontFamily: "'Newsreader', Georgia, serif" }}>
+          {business?.name}
         </p>
       </div>
+
+      <div style={{ flex: 1 }} />
+
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
         <span style={{
-          fontSize: 11, fontWeight: 600, padding: '4px 10px', borderRadius: 999,
-          background: active ? 'rgba(79,163,138,0.12)' : 'rgba(184,84,80,0.10)',
-          color: active ? COLORS.green : COLORS.red,
-          display: 'inline-flex', alignItems: 'center', gap: 5,
+          display: 'inline-flex', alignItems: 'center', gap: 8,
+          background: paused ? 'rgba(239, 68, 68, 0.1)' : 'rgba(16, 185, 129, 0.1)',
+          border: `1px solid ${paused ? 'rgba(239, 68, 68, 0.2)' : 'rgba(16, 185, 129, 0.2)'}`,
+          borderRadius: 999, padding: '6px 12px',
+          fontSize: 13, fontWeight: 600, flexShrink: 0,
+          color: paused ? COLORS.red : COLORS.mint,
         }}>
-          <span style={{
-            width: 6, height: 6, borderRadius: '50%', background: active ? COLORS.green : COLORS.red,
-            animation: active ? 'pulse 2s infinite' : 'none',
-          }} />
-          {active ? 'Bot Active' : 'Paused'}
+          <span
+            className={paused ? '' : 'animate-pulse'}
+            style={{ width: 8, height: 8, borderRadius: '50%', background: paused ? COLORS.red : COLORS.mint, display: 'inline-block' }}
+          />
+          {paused ? 'Bot Paused' : 'Bot Active'}
         </span>
+
         <div style={{ width: 1, height: 24, background: 'var(--line)' }} />
+
         <button
           onClick={toggleTheme}
           title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
           style={{
-            background: 'none', border: 'none', cursor: 'pointer', padding: '4px',
-            fontSize: 16, lineHeight: 1, borderRadius: 8, color: COLORS.textHint,
-            transition: 'opacity .15s',
+            background: 'var(--bg)', border: `1px solid var(--line)`, cursor: 'pointer', padding: '8px',
+            fontSize: 16, lineHeight: 1, borderRadius: '50%', color: COLORS.textPrimary,
+            transition: 'all 0.2s ease',
           }}
           aria-label="Toggle dark mode"
         >
